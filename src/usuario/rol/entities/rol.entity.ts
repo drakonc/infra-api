@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, CreateDateColumn } from 'typeorm';
 
 @Entity()
 export class Rol {
@@ -8,5 +8,5 @@ export class Rol {
 	@Column({ length: 50, nullable: false })
 	NombreRol: string;
 
-	@Column() created_at: Date;
+	@CreateDateColumn() created_at: Date;
 }
