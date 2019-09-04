@@ -11,10 +11,12 @@ export class RolController {
 		this.rolServices
 			.getAllRol()
 			.then((msj) => {
-				res.status(HttpStatus.CREATED).json(msj);
+				if (msj.length > 0)
+					res.status(HttpStatus.CREATED).json(msj); //Se Listan los Elementos
+				else res.status(HttpStatus.FORBIDDEN).json(msj); //No Hay Roles Creados
 			})
 			.catch(() => {
-				res.status(HttpStatus.FORBIDDEN).json({ msj: 'Error al Listar Los Roles' });
+				res.status(HttpStatus.FORBIDDEN).json({ msj: -1 }); //Error
 			});
 	}
 
@@ -23,10 +25,11 @@ export class RolController {
 		this.rolServices
 			.getRol(IdRol)
 			.then((msj) => {
-				res.status(HttpStatus.CREATED).json(msj);
+				if (msj) res.status(HttpStatus.CREATED).json(msj);
+				else res.status(HttpStatus.FORBIDDEN).json({ IdRol: '', NombreRol: '', created_at: null }); //No Hay Rol Creados
 			})
 			.catch(() => {
-				res.status(HttpStatus.FORBIDDEN).json({ msj: `Error al Traer rl Rol de ID #${IdRol}` });
+				res.status(HttpStatus.FORBIDDEN).json({ msj: -1 }); //Error
 			});
 	}
 
@@ -35,10 +38,12 @@ export class RolController {
 		this.rolServices
 			.createRol(createRolDto)
 			.then((msj) => {
-				res.status(HttpStatus.CREATED).json(msj);
+				if (msj != null)
+					res.status(HttpStatus.CREATED).json(msj); //Se Creo Correctamente
+				else res.status(HttpStatus.FORBIDDEN).json({ IdRol: '', NombreRol: '', created_at: null }); //Ya Existe El Rol
 			})
 			.catch(() => {
-				res.status(HttpStatus.FORBIDDEN).json({ msj: `Error al Crear el Rol  #${createRolDto.NombreRol}` });
+				res.status(HttpStatus.FORBIDDEN).json({ msj: -1 }); //Error
 			});
 	}
 
@@ -47,10 +52,12 @@ export class RolController {
 		this.rolServices
 			.updateRol(IdRol, updateRolDto)
 			.then((msj) => {
-				res.status(HttpStatus.CREATED).json(msj);
+				if (msj != null)
+					res.status(HttpStatus.CREATED).json(msj); //Se Actualizo Correctamente
+				else res.status(HttpStatus.FORBIDDEN).json({ IdRol: '', NombreRol: '', created_at: null }); //Error Al Actualizar No Existe
 			})
 			.catch(() => {
-				res.status(HttpStatus.FORBIDDEN).json({ msj: `Error al Actualizar el Rol  #${updateRolDto.NombreRol}` });
+				res.status(HttpStatus.FORBIDDEN).json({ msj: -1 }); //Error
 			});
 	}
 
@@ -59,10 +66,12 @@ export class RolController {
 		this.rolServices
 			.deleteRol(IdRol)
 			.then((msj) => {
-				res.status(HttpStatus.CREATED).json(msj);
+				if (msj > 0)
+					res.status(HttpStatus.CREATED).json({ msj: 1 }); //Se Elimino El Archivo
+				else res.status(HttpStatus.FORBIDDEN).json({ msj: 0 }); //No se Elimino ya que no se Encontro
 			})
 			.catch(() => {
-				res.status(HttpStatus.FORBIDDEN).json({ msj: `Error al Eliminar el Rol #${IdRol}` });
+				res.status(HttpStatus.FORBIDDEN).json({ msj: -1 }); //Error
 			});
 	}
 }
